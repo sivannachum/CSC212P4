@@ -23,12 +23,19 @@ public class InteractiveFiction {
 		// This is the current location of the player (initialize as start).
 		// Maybe we'll expand this to a Player object.
 		String place = game.getStart();
+		
+		// Initializes the gameTime to 12 o'clock.
+		GameTime gameTime = new GameTime(12); 
 
 		// Play the game until quitting.
 		// This is too hard to express here, so we just use an infinite loop with breaks.
 		while (true) {
 			// Print the description of where you are.
 			Place here = game.getPlace(place);
+			// TODO: fix this
+			int time = gameTime.getHour();
+			String stringTime = Integer.toString(time);
+			System.out.println("The time currently is " stringTime + ":00.");
 			System.out.println(here.getDescription());
 
 			// Game over after print!
@@ -38,6 +45,7 @@ public class InteractiveFiction {
 
 			// Show a user the ways out of this place.
 			List<Exit> exits = here.getVisibleExits();
+			List<Exit> secretExits = here.getSecretExits();
 			
 			for (int i=0; i<exits.size(); i++) {
 			    Exit e = exits.get(i);
@@ -64,6 +72,15 @@ public class InteractiveFiction {
 					continue;
 				}
 			}
+			// TODO: fix this
+			else if (action.equals("search")) {
+				for (Exit e : secretExits) {
+					SecretExit s = (SecretExit) e;
+					s.search();
+					continue;
+				}
+			}
+			
 			
 			// From here on out, what they typed better be a number!
 			Integer exitNum = null;
@@ -82,10 +99,12 @@ public class InteractiveFiction {
 			// Move to the room they indicated.
 			Exit destination = exits.get(exitNum);
 			place = destination.getTarget();
+			gameTime.increaseHour();
 		}
 
 		// You get here by "quit" or by reaching a Terminal Place.
 		System.out.println(">>> GAME OVER <<<");
+		System.out.println(gameTime.getHoursPassed());
 	}
 
 }

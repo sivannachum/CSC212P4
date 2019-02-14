@@ -15,6 +15,10 @@ public class Place {
 	 */
 	private List<Exit> exits;
 	/**
+	 * This is a list of SecretExits that the user has not yet uncovered.
+	 */
+	private List<Exit> secretExits;
+	/**
 	 * This is the identifier of the place.
 	 */
 	private String id;
@@ -37,6 +41,7 @@ public class Place {
 		this.id = id;
 		this.description = description;
 		this.exits = new ArrayList<>();
+		this.secretExits = new ArrayList<>();
 		this.terminal = terminal;
 	}
 	
@@ -45,6 +50,9 @@ public class Place {
 	 * @param exit - the description and target of the other Place.
 	 */
 	public void addExit(Exit exit) {
+		if (exit.isSecret()) {
+			this.secretExits.add(exit);
+		}
 		this.exits.add(exit);
 	}
 	
@@ -73,11 +81,21 @@ public class Place {
 	}
 
 	/**
-	 * Get a view of the exits from this Place, for navigation.
-	 * @return all the exits from this place.
+	 * Get a view of the exits that are not secret from this Place, for navigation.
+	 * @return all the exits that are not secret from this place.
 	 */
 	public List<Exit> getVisibleExits() {
-		return Collections.unmodifiableList(exits);
+		List<Exit> visibleExits = new ArrayList<>(exits);
+		visibleExits.removeAll(secretExits);
+		return Collections.unmodifiableList(visibleExits);
+	}
+	
+	/**
+	 * Get a view of the secretExits from this place, in case a user searches for them.
+	 * @return all the secret exits from this place
+	 */
+	public List<Exit> getSecretExits() {
+		return Collections.unmodifiableList(secretExits);
 	}
 	
 	/**

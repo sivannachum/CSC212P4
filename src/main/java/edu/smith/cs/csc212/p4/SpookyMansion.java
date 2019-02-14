@@ -29,6 +29,10 @@ public class SpookyMansion implements GameWorld {
 		entranceHall.addExit(new Exit("basement", "There are stairs leading down."));
 		entranceHall.addExit(new Exit("attic", "There are stairs leading up."));
 		entranceHall.addExit(new Exit("kitchen", "There is a red door."));
+		entranceHall.addExit(new SecretExit("secret", "This is a secret"));
+		
+		Place secret = insert(Place.create("secret", "You've reached the secret"));
+		secret.addExit(new Exit("entranceHall", "Go back"));
 				
 		Place basement = insert(
 				Place.create("basement", "You have found the basement of the mansion.\n" + 

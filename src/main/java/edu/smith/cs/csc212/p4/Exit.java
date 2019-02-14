@@ -76,4 +76,21 @@ public class Exit {
 		}
 		return false;
 	}
+	/**
+	 * This method returns an Exit's secret value.
+	 * Regular exits are never secrets.
+	 * SecretExits are secret until they are searched for and found.
+	 * @return whether an exit is secret or not
+	 */
+	public boolean isSecret() {
+		return false;
+	}
+	
+	/**
+	 * This does nothing for regular Exits because they can already be seen.
+	 * One does not need to search for them.
+	 */
+	public void search() {
+		
+	}
 }
