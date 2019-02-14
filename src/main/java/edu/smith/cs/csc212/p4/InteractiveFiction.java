@@ -57,7 +57,7 @@ public class InteractiveFiction {
 			// Get the word they typed as lowercase, and no spaces.
 			String action = words.get(0).toLowerCase().trim();
 			
-			if (action.equals("quit")) {
+			if (action.equals("quit") || action.equals("q") || action.equals("escape")) {
 				if (input.confirm("Are you sure you want to quit?")) {
 					break;
 				} else {
@@ -74,7 +74,7 @@ public class InteractiveFiction {
 				continue;
 			}
 			
-			if (exitNum < 0 || exitNum > exits.size()) {
+			if (exitNum < 0 || exitNum >= exits.size()) {
 				System.out.println("I don't know what to do with that number!");
 				continue;
 			}
