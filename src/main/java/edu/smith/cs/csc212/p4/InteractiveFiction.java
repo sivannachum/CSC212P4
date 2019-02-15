@@ -37,7 +37,7 @@ public class InteractiveFiction {
 		while (true) {
 			// Print the description of where you are.
 			Place here = game.getPlace(place);
-			
+			// Print the time it currently is in the game.
 			System.out.println(here.getDescription(gameTime));
 			System.out.println("It is " + gameTime.getHour() + ":00.");
 
@@ -47,7 +47,7 @@ public class InteractiveFiction {
 			}
 
 			/**
-			 * If a player has searched for secret exits, they are no longer secret.
+			 * If a player has searched for secret exits in a place, they are no longer secret.
 			 */
 			List<Exit> secretExits = here.getSecretExits();
 			if (searched) {
@@ -67,7 +67,7 @@ public class InteractiveFiction {
 				System.out.println(" ["+i+"] " + e.getDescription());
 			}
 
-			// Figure out what the user wants to do, for now, only "quit" is special.
+			// Figure out what the user wants to do.
 			List<String> words = input.getUserWords(">");
 			if (words.size() == 0) {
 				System.out.println("Must type something!");
@@ -80,6 +80,7 @@ public class InteractiveFiction {
 			// Get the word they typed as lowercase, and no spaces.
 			String action = words.get(0).toLowerCase().trim();
 			
+			// Allow the user to quit if they want to.
 			if (action.equals("quit") || action.equals("q") || action.equals("escape")) {
 				if (input.confirm("Are you sure you want to quit?")) {
 					break;
@@ -89,7 +90,7 @@ public class InteractiveFiction {
 			}
 			
 			/**
-			 * If a player has entered search, they get to see SecretExits.
+			 * If a player has entered search, they get to see SecretExits in their current location.
 			 */
 			else if (action.equals("search")) {
 				searched = true;
@@ -129,6 +130,7 @@ public class InteractiveFiction {
 
 		// You get here by "quit" or by reaching a Terminal Place.
 		System.out.println(">>> GAME OVER <<<");
+		// Let the player know how many game hours they spent playing.
 		System.out.println("You spent " + gameTime.getHoursPassed() + " hours in the game.");
 	}
 

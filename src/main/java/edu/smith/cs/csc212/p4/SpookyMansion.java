@@ -27,18 +27,21 @@ public class SpookyMansion implements GameWorld {
 				Place.create("entranceHall", "You are in the grand entrance hall of a large building.\n"
 						+ "The front door is locked. How did you get here?"));
 		entranceHall.addExit(new Exit("basement", "There are stairs leading down."));
+		// The attic is only visible at night.
 		entranceHall.addExit(new NightExit("attic", "There are stairs leading up."));
+		// The kitchen is only visible during the day.
 		entranceHall.addExit(new DayExit("kitchen", "There is a red door."));
 				
 		Place basement = insert(
 				Place.create("basement", "You have found the basement of the mansion.\n" + 
 		                           "It is darker down here.\n" +
-						"You get the sense a secret is nearby, but you only see the stairs you came from and a green door up against your face."
+						"You get the sense a secret is nearby, but you only see the stairs you came from and a green door to your left."
 						));
 		basement.addExit(new Exit("entranceHall", "There are stairs leading up."));
 		basement.addExit(new Exit("supplyCloset", "There is a green door."));
 		basement.addExit(new SecretExit("secretRoom", "You have found the secret entrance to the secret room."));
 		
+		// The supplyCloset has a different description depending on the time of day.
 		Place supplyCloset = insert(Place.create("supplyCloset", "You see some cleaning supplies and mold. Gross!", "There is a racoon in here. It looks hungry and ready to eat anything."));
 		supplyCloset.addExit(new Exit("basement", "There is more back through the green door."));
 
@@ -110,11 +113,25 @@ public class SpookyMansion implements GameWorld {
 	 */
 	private void checkAllExitsGoSomewhere() {
 		boolean missing = false;
+		// Have to check that all exits go somewhere at night and later we check that they all go somewhere in the day
+		GameTime g = new GameTime(0);
 		// For every place:
 		for (Place p : places.values()) {
 			// For every exit from that place:
-			GameTime g = new GameTime();
 			for (Exit x : p.getVisibleExits(g)) {
+				// That exit goes to somewhere that exists!
+				if (!places.containsKey(x.getTarget())) {
+					// Don't leave immediately, but check everything all at once.
+					missing = true;
+					// Print every exit with a missing place:
+					System.err.println("Found exit pointing at " + x.getTarget() + " which does not exist as a place.");
+				}
+			}
+		}
+		g = new GameTime(12);
+		for (Place r : places.values()) {
+			// For every exit from that place:
+			for (Exit x : r.getVisibleExits(g)) {
 				// That exit goes to somewhere that exists!
 				if (!places.containsKey(x.getTarget())) {
 					// Don't leave immediately, but check everything all at once.

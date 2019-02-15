@@ -31,7 +31,7 @@ public class Place {
 	 */
 	private String id;
 	/**
-	 * What to tell the user about this place.
+	 * What to tell the user about this place if it is day time.
 	 */
 	private String description;
 	/**
@@ -63,6 +63,7 @@ public class Place {
 	
 	/**
 	 * Create an exit for the user to navigate to another Place.
+	 * Sort exits into different lists based on what type of exit they are.
 	 * @param exit - the description and target of the other Place.
 	 */
 	public void addExit(Exit exit) {
@@ -106,11 +107,14 @@ public class Place {
 	}
 
 	/**
-	 * Get a view of the exits that are not secret from this Place, for navigation.
-	 * @return all the exits that are not secret from this place.
+	 * Get a view of the exits from this place that the user can see, for navigation.
+	 * @return all the exits that are currently visible to the user.
 	 */
 	public List<Exit> getVisibleExits(GameTime gameTime) {
 		List<Exit> visibleExits = new ArrayList<>(exits);
+		/**
+		 * If a user has not uncovered secret exits, they will not see them.
+		 */
 		visibleExits.removeAll(secretExits);
 		/**
 		 * If it is night time, DayExits are not visible.

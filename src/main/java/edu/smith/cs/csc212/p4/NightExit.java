@@ -1,5 +1,10 @@
 package edu.smith.cs.csc212.p4;
 
+/**
+ * This class represents an exit from one place to another that can only be seen at night.
+ * @author sivan
+ *
+ */
 public class NightExit extends Exit {
 	/**
 	 * Create a new NightExit.

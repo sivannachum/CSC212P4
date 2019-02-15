@@ -1,5 +1,10 @@
 package edu.smith.cs.csc212.p4;
 
+/**
+ * This class represents an exit from one place to another that can only be seen if a user searches for it.
+ * @author sivan
+ *
+ */
 public class SecretExit extends Exit {
 	/**
 	 * SecretExits begin hidden, but if a user finds them, they must then become not hidden.
