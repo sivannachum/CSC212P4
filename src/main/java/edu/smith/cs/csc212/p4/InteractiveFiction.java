@@ -38,8 +38,8 @@ public class InteractiveFiction {
 			// Print the description of where you are.
 			Place here = game.getPlace(place);
 			
-			System.out.println("It is " + gameTime.getHour() + " o'clock.");
-			System.out.println(here.getDescription());
+			System.out.println(here.getDescription(gameTime));
+			System.out.println("It is " + gameTime.getHour() + ":00.");
 
 			// Game over after print!
 			if (here.isTerminalState()) {
@@ -60,7 +60,7 @@ public class InteractiveFiction {
 			searched = false;
 			
 			// Show a user the ways out of this place.
-			List<Exit> exits = here.getVisibleExits();
+			List<Exit> exits = here.getVisibleExits(gameTime);
 			
 			for (int i=0; i<exits.size(); i++) {
 			    Exit e = exits.get(i);
@@ -91,8 +91,17 @@ public class InteractiveFiction {
 			/**
 			 * If a player has entered search, they get to see SecretExits.
 			 */
-			if (action.equals("search")) {
+			else if (action.equals("search")) {
 				searched = true;
+				continue;
+			}
+			
+			/**
+			 * If a player enters rest, two hours pass in the game.
+			 */
+			else if (action.equals("rest")) {
+				gameTime.increaseHour();
+				gameTime.increaseHour();
 				continue;
 			}
 			
@@ -114,12 +123,13 @@ public class InteractiveFiction {
 			// Move to the room they indicated.
 			Exit destination = exits.get(exitNum);
 			place = destination.getTarget();
+			// Increase the hour after they have moved.
 			gameTime.increaseHour();
 		}
 
 		// You get here by "quit" or by reaching a Terminal Place.
 		System.out.println(">>> GAME OVER <<<");
-		System.out.println(gameTime.getHoursPassed() + " hours have passed.");
+		System.out.println("You spent " + gameTime.getHoursPassed() + " hours in the game.");
 	}
 
 }

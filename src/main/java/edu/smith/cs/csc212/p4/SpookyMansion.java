@@ -27,8 +27,8 @@ public class SpookyMansion implements GameWorld {
 				Place.create("entranceHall", "You are in the grand entrance hall of a large building.\n"
 						+ "The front door is locked. How did you get here?"));
 		entranceHall.addExit(new Exit("basement", "There are stairs leading down."));
-		entranceHall.addExit(new Exit("attic", "There are stairs leading up."));
-		entranceHall.addExit(new Exit("kitchen", "There is a red door."));
+		entranceHall.addExit(new NightExit("attic", "There are stairs leading up."));
+		entranceHall.addExit(new DayExit("kitchen", "There is a red door."));
 				
 		Place basement = insert(
 				Place.create("basement", "You have found the basement of the mansion.\n" + 
@@ -39,7 +39,7 @@ public class SpookyMansion implements GameWorld {
 		basement.addExit(new Exit("supplyCloset", "There is a green door."));
 		basement.addExit(new SecretExit("secretRoom", "You have found the secret entrance to the secret room."));
 		
-		Place supplyCloset = insert(Place.create("supplyCloset", "There is a racoon in here. It looks hungry and ready to eat anything."));
+		Place supplyCloset = insert(Place.create("supplyCloset", "You see some cleaning supplies and mold. Gross!", "There is a racoon in here. It looks hungry and ready to eat anything."));
 		supplyCloset.addExit(new Exit("basement", "There is more back through the green door."));
 
 		Place attic = insert(Place.create("attic",
@@ -113,7 +113,8 @@ public class SpookyMansion implements GameWorld {
 		// For every place:
 		for (Place p : places.values()) {
 			// For every exit from that place:
-			for (Exit x : p.getVisibleExits()) {
+			GameTime g = new GameTime();
+			for (Exit x : p.getVisibleExits(g)) {
 				// That exit goes to somewhere that exists!
 				if (!places.containsKey(x.getTarget())) {
 					// Don't leave immediately, but check everything all at once.

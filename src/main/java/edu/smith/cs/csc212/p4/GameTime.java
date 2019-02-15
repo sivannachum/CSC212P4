@@ -65,5 +65,16 @@ public class GameTime {
 		}
 		hoursPassed++;
 	}
+	
+	/**
+	 * Night time begins at 9PM and ends at 3AM
+	 * @return true if it is night time
+	 */
+	public boolean isNightTime() {
+		if (hour >= 21 || hour <= 3) {
+			return true;
+		}
+		return false;
+	}
 
 }
