@@ -95,7 +95,7 @@ public class Place {
 	 * @return all the secret exits from this place
 	 */
 	public List<Exit> getSecretExits() {
-		return Collections.unmodifiableList(secretExits);
+		return secretExits;
 	}
 	
 	/**

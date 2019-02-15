@@ -26,16 +26,19 @@ public class InteractiveFiction {
 		
 		// Initializes the gameTime to 12 o'clock.
 		GameTime gameTime = new GameTime(12); 
+		
+		/**
+		 * Keeps track of if a player has searched a place for SecretExits.
+		 */
+		boolean searched = false;
 
 		// Play the game until quitting.
 		// This is too hard to express here, so we just use an infinite loop with breaks.
 		while (true) {
 			// Print the description of where you are.
 			Place here = game.getPlace(place);
-			// TODO: fix this
-			int time = gameTime.getHour();
-			String stringTime = Integer.toString(time);
-			System.out.println("The time currently is " stringTime + ":00.");
+			
+			System.out.println("It is " + gameTime.getHour() + " o'clock.");
 			System.out.println(here.getDescription());
 
 			// Game over after print!
@@ -43,9 +46,21 @@ public class InteractiveFiction {
 				break;
 			}
 
+			/**
+			 * If a player has searched for secret exits, they are no longer secret.
+			 */
+			List<Exit> secretExits = here.getSecretExits();
+			if (searched) {
+				for (int i = secretExits.size() - 1; i >= 0; i--) {
+					Exit e = secretExits.get(i);
+					e.search();
+					secretExits.remove(i);
+				}
+			}
+			searched = false;
+			
 			// Show a user the ways out of this place.
 			List<Exit> exits = here.getVisibleExits();
-			List<Exit> secretExits = here.getSecretExits();
 			
 			for (int i=0; i<exits.size(); i++) {
 			    Exit e = exits.get(i);
@@ -72,13 +87,13 @@ public class InteractiveFiction {
 					continue;
 				}
 			}
-			// TODO: fix this
-			else if (action.equals("search")) {
-				for (Exit e : secretExits) {
-					SecretExit s = (SecretExit) e;
-					s.search();
-					continue;
-				}
+			
+			/**
+			 * If a player has entered search, they get to see SecretExits.
+			 */
+			if (action.equals("search")) {
+				searched = true;
+				continue;
 			}
 			
 			
@@ -104,7 +119,7 @@ public class InteractiveFiction {
 
 		// You get here by "quit" or by reaching a Terminal Place.
 		System.out.println(">>> GAME OVER <<<");
-		System.out.println(gameTime.getHoursPassed());
+		System.out.println(gameTime.getHoursPassed() + " hours have passed.");
 	}
 
 }
